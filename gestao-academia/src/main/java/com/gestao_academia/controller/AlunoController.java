@@ -22,6 +22,7 @@ public class AlunoController {
 
     @GetMapping
     public ResponseEntity<List<Aluno>> listar()  {
+
         return ResponseEntity.ok(service.listarTodos());
     }
 

@@ -16,4 +16,6 @@ public class ExercicioService {
     public List<Exercicio> listarTodos() {
         return repository.findAll();
     }
+
+
 }
