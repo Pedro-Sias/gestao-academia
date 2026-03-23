@@ -15,6 +15,9 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String nome;
+    private String email;
+
     @NotBlank(message = "A senha é obrigatória!")
     private String senha;
 
