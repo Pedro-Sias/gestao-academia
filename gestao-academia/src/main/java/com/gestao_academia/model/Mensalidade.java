@@ -15,7 +15,8 @@ public class Mensalidade {
 
     private BigDecimal valor;
     private LocalDate dataVencimento;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento status;
 
 
     @ManyToOne

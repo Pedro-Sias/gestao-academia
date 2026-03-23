@@ -16,7 +16,7 @@ public class CheckIn {
     private UUID id;
 
 
-    private LocalDateTime dataHora = LocalDateTime.now();
+    private LocalDateTime dataCheckin = LocalDateTime.now();
     private String tipo;
 
     @ManyToOne

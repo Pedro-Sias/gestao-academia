@@ -1,6 +1,7 @@
 package com.gestao_academia.service;
 import com.gestao_academia.model.Mensalidade;
 import com.gestao_academia.model.Pagamento;
+import com.gestao_academia.model.StatusPagamento;
 import com.gestao_academia.repository.MensalidadeRepository;
 import com.gestao_academia.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class PagamentoService {
         Mensalidade mensalidade = mensalidadeRepository.findById(pagamento.getMensalidade().getId())
                 .orElseThrow(() -> new RuntimeException("Mensalidade não encontrada"));
 
-        mensalidade.setStatus("PAGO");
+        mensalidade.setStatus(StatusPagamento.PAGO);
         mensalidadeRepository.save(mensalidade);
 
         pagamento.setDataPagamento(LocalDateTime.now());

@@ -19,4 +19,9 @@ public class TreinoController {
     public Treino criar(@RequestBody Treino treino) {
         return service.salvar(treino);
     }
+
+    @GetMapping
+    public List<Treino> listarTodos() {
+        return service.listarTodos();
+    }
 }
