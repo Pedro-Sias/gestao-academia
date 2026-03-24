@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
-
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -23,9 +22,9 @@ public class TreinoController {
     }
 
     @GetMapping
-    public List<TreinoDetalhamentoDTO> listarTodos() {
-        return service.listarTodos().stream()
-                .map(TreinoDetalhamentoDTO :: new)
+    public List<TreinoDetalhamentoDTO> listar() {
+        return service.listarTodos().stream() // Troquei repository por service.listarTodos()
+                .map(TreinoDetalhamentoDTO::new)
                 .toList();
     }
 }
