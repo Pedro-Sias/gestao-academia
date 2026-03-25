@@ -1,4 +1,5 @@
 package com.gestao_academia.controller;
+import com.gestao_academia.dto.AlunoDetalhamentoDTO;
 import com.gestao_academia.model.Aluno;
 import com.gestao_academia.service.AlunoService;
 import org.apache.coyote.Response;
@@ -15,17 +16,21 @@ public class AlunoController {
     @Autowired
     private AlunoService service;
 
+
     @PostMapping
-    public ResponseEntity<Aluno> cadastrar(@RequestBody Aluno aluno){
-        return ResponseEntity.ok(service.salvar(aluno));
-    }
+    public ResponseEntity<AlunoDetalhamentoDTO> cadastrar(@RequestBody Aluno aluno) {
 
+        var alunoSalvo = service.salvar(aluno);
+        return ResponseEntity.ok(new AlunoDetalhamentoDTO(alunoSalvo));
+    }
     @GetMapping
-    public ResponseEntity<List<Aluno>> listar()  {
+    public ResponseEntity<List<AlunoDetalhamentoDTO>> listar() {
 
-        return ResponseEntity.ok(service.listarTodos());
+        var lista = service.listarTodos().stream()
+                .map(AlunoDetalhamentoDTO::new)
+                .toList();
+        return ResponseEntity.ok(lista);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Aluno> buscar(@PathVariable UUID id) {
         return ResponseEntity.ok(service.buscarPorId(id));

@@ -15,8 +15,7 @@ public class Aluno extends Usuario {
 
     @PrePersist
     public void gerarMatricula() {
-        // Gera uma matrícula com o prefixo MAT, o ano atual e um número aleatório
-        this.matricula = "MAT" + java.time.Year.now().getValue() + (int)(Math.random() * 10000);
+                this.matricula = "MAT" + java.time.Year.now().getValue() + (int)(Math.random() * 10000);
     }
 
 }
