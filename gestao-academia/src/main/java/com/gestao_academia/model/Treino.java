@@ -21,11 +21,6 @@ public class Treino {
     @JoinColumn(name = "aluno_id")
     private Aluno aluno;
 
-    @ManyToMany
-    @JoinTable(
-            name = "treino_exercicios",
-            joinColumns = @JoinColumn(name = "treino_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercicio_id")
-    )
-    private List<Exercicio> exercicios;
+    @OneToMany(mappedBy = "treino", cascade = CascadeType.ALL)
+    private List<Serie> series;
 }
