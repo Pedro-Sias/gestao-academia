@@ -1,7 +1,9 @@
 package com.gestao_academia.controller;
+import com.gestao_academia.dto.ExercicioDetalhamentoDTO;
 import com.gestao_academia.model.Exercicio;
 import com.gestao_academia.service.ExercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,12 +15,15 @@ public class ExercicioController {
     private ExercicioService service;
 
     @PostMapping
-    public Exercicio criar(@RequestBody Exercicio exercicio){
-        return service.salvar(exercicio);
+    public ResponseEntity<ExercicioDetalhamentoDTO> cadastrar(@RequestBody Exercicio exercicio) {
+        var salvo = service.salvar(exercicio);
+        return ResponseEntity.ok(new ExercicioDetalhamentoDTO(salvo));
     }
-
     @GetMapping
-    public List<Exercicio> listar(){
-        return service.listarTodos();
+    public ResponseEntity<List<ExercicioDetalhamentoDTO>> listar() {
+        var lista = service.listarTodos().stream()
+                .map(ExercicioDetalhamentoDTO::new)
+                .toList();
+        return ResponseEntity.ok(lista);
     }
 }

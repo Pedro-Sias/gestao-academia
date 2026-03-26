@@ -1,7 +1,11 @@
 package com.gestao_academia.controller;
+import com.gestao_academia.dto.AulaDetalhamentoDTO;
 import com.gestao_academia.model.Aula;
 import com.gestao_academia.repository.AulaRepository;
+import com.gestao_academia.service.AulaService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -12,15 +16,21 @@ import java.util.List;
 public class AulaController {
 
     @Autowired
-    private AulaRepository repository;
+    private AulaService service;
 
     @PostMapping
-    public Aula criar(@RequestBody Aula aula){
-        return repository.save(aula);
+    public ResponseEntity<AulaDetalhamentoDTO> criar(@RequestBody Aula aula) {
+        var salva = service.salvar(aula);
+
+        return ResponseEntity.ok(new AulaDetalhamentoDTO(salva));
     }
 
     @GetMapping
-    public List<Aula> listar(){
-        return repository.findAll();
+    public ResponseEntity<List<AulaDetalhamentoDTO>> listar() {
+        var lista = service.listarTodas().stream()
+                .map(AulaDetalhamentoDTO::new)
+                .toList();
+        return ResponseEntity.ok(lista);
     }
+
 }

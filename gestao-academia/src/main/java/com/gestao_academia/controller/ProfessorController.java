@@ -1,7 +1,10 @@
 package com.gestao_academia.controller;
+import com.gestao_academia.dto.ProfessorDetalhamentoDTO;
 import com.gestao_academia.model.Professor;
 import com.gestao_academia.repository.ProfessorRepository;
+import com.gestao_academia.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -11,15 +14,19 @@ import java.util.List;
 public class ProfessorController {
 
     @Autowired
-    private ProfessorRepository repository;
+    private ProfessorService service;
 
     @PostMapping
-    public Professor criar(@RequestBody Professor professor){
-        return repository.save(professor);
+    public ResponseEntity<ProfessorDetalhamentoDTO> cadastrar (@RequestBody Professor professor){
+        var salvo = service.salvar(professor);
+        return ResponseEntity.ok(new ProfessorDetalhamentoDTO(salvo));
     }
 
     @GetMapping
-    public List<Professor> listar(){
-        return repository.findAll();
+    public ResponseEntity<List<ProfessorDetalhamentoDTO>> listar(){
+        var lista = service.listarTodos().stream()
+                .map(ProfessorDetalhamentoDTO:: new)
+                .toList();
+        return ResponseEntity.ok(lista);
     }
 }

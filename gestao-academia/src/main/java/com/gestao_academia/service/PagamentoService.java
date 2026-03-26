@@ -4,6 +4,7 @@ import com.gestao_academia.model.Pagamento;
 import com.gestao_academia.model.StatusPagamento;
 import com.gestao_academia.repository.MensalidadeRepository;
 import com.gestao_academia.repository.PagamentoRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,4 +34,7 @@ public class PagamentoService {
         return repository.save(pagamento);
     }
 
+    public List<Pagamento> listarTodos() {
+        return repository.findAll();
+    }
 }
