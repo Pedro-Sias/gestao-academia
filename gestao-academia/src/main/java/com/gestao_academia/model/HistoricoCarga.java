@@ -3,6 +3,7 @@ import com.gestao_academia.repository.ExercicioRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,9 +17,10 @@ public class HistoricoCarga {
     private UUID id;
 
 
-    private String cargaAnterior;
-    private String cargaAtual;
+    private BigDecimal cargaAnterior;
+    private BigDecimal cargaAtual;
     private LocalDateTime dataRegistro = LocalDateTime.now();
+    private String observacao;
 
 
     @ManyToOne
@@ -29,5 +31,4 @@ public class HistoricoCarga {
     @JoinColumn(name = "exercicio_id")
     private Exercicio exercicio;
 
-    private String observacao;
 }

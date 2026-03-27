@@ -22,4 +22,11 @@ public class TreinoService {
     public List<Treino> listarPorAluno(UUID alunoId) {
         return repository.findByAlunoId(alunoId);
     }
+
+    public void deletar(UUID id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Treino não encontrado para exclusão!");
+        }
+        repository.deleteById(id);
+    }
 }

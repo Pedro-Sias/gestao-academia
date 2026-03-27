@@ -4,6 +4,8 @@ import com.gestao_academia.model.HistoricoCarga;
 import com.gestao_academia.repository.HistoricoCargaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,20 +15,31 @@ public class HistoricoCargaService {
     @Autowired
     private HistoricoCargaRepository repository;
 
-    public HistoricoCarga salvar(HistoricoCarga historico) {
-        return repository.save(historico);
+
+    public HistoricoCarga salvar(HistoricoCarga novo) {
+
+        var ultimaCarga = repository.findFirstByAlunoIdAndExercicioIdOrderByDataRegistroDesc(
+                novo.getAluno().getId(),
+                novo.getExercicio().getId()
+        );
+
+
+        BigDecimal cargaPassada = ultimaCarga
+                .map(HistoricoCarga::getCargaAtual)
+                .orElse(BigDecimal.ZERO);
+
+        novo.setCargaAnterior(cargaPassada);
+
+        return repository.save(novo);
     }
 
     public List<HistoricoCarga> listarPorAluno(UUID alunoId) {
         return repository.findByAlunoId(alunoId);
     }
 
+
     public HistoricoCarga buscarUltimaCarga(UUID alunoId, UUID exercicioId) {
-        return repository.findAll().stream()
-                .filter(h -> h.getAluno().getId().equals(alunoId))
-                .filter(h ->h.getExercicio().getId().equals(exercicioId))
-                .sorted((h1, h2) -> h2.getDataRegistro().compareTo(h1.getDataRegistro()))
-                .findFirst()
+        return repository.findFirstByAlunoIdAndExercicioIdOrderByDataRegistroDesc(alunoId, exercicioId)
                 .orElse(null);
     }
 }

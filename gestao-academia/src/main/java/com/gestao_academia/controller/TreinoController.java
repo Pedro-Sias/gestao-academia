@@ -1,6 +1,9 @@
 package com.gestao_academia.controller;
+
 import com.gestao_academia.dto.TreinoDetalhamentoDTO;
 import com.gestao_academia.model.Treino;
+import com.gestao_academia.repository.AlunoRepository;
+import com.gestao_academia.repository.ExercicioRepository;
 import com.gestao_academia.service.TreinoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,10 @@ public class TreinoController {
     private TreinoService service;
 
     @Autowired
-    private com.gestao_academia.repository.AlunoRepository alunoRepository;
+    private AlunoRepository alunoRepository;
+
+    @Autowired
+    private ExercicioRepository exercicioRepository;
 
     @PostMapping
     public ResponseEntity<TreinoDetalhamentoDTO> criar(@RequestBody Treino treino) {
@@ -27,6 +33,16 @@ public class TreinoController {
             var alunoReal = alunoRepository.findById(treino.getAluno().getId())
                     .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
             treino.setAluno(alunoReal);
+        }
+
+        if (treino.getSeries() != null) {
+            treino.getSeries().forEach(serie -> {
+                if (serie.getExercicio() != null && serie.getExercicio().getId() != null) {
+                    var exercicioReal = exercicioRepository.findById(serie.getExercicio().getId())
+                            .orElseThrow(() -> new RuntimeException("Exercício não encontrado: " + serie.getExercicio().getId()));
+                    serie.setExercicio(exercicioReal);
+                }
+            });
         }
 
         var salvo = service.salvar(treino);
@@ -39,5 +55,11 @@ public class TreinoController {
                 .map(TreinoDetalhamentoDTO::new)
                 .toList();
         return ResponseEntity.ok(lista);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
