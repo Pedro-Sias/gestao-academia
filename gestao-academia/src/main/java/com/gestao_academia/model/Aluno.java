@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 
 @Entity
 @Table(name= "alunos")
@@ -12,6 +14,9 @@ import lombok.EqualsAndHashCode;
 public class Aluno extends Usuario {
 
     private String matricula;
+
+    @OneToMany(mappedBy = "aluno", fetch = FetchType.LAZY)
+    private List<Mensalidade> mensalidades;
 
     @PrePersist
     public void gerarMatricula() {

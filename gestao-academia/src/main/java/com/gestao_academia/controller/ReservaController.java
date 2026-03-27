@@ -1,9 +1,8 @@
 package com.gestao_academia.controller;
 
 import com.gestao_academia.dto.ReservaDetalhamentoDTO;
-import com.gestao_academia.model.Reserva;
+import com.gestao_academia.dto.ReservaRequestDTO;
 import com.gestao_academia.service.ReservaService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +18,9 @@ public class ReservaController {
     private ReservaService service;
 
     @PostMapping
-    public ResponseEntity<ReservaDetalhamentoDTO> criar (Reserva reserva) {
-        var salva = service.reservarVaga(reserva);
-        return ResponseEntity.ok(new ReservaDetalhamentoDTO(salva));
+    public ResponseEntity<ReservaDetalhamentoDTO> criar(@RequestBody ReservaRequestDTO dados) {
+        var reservaSalva = service.reservarVaga(dados);
+        return ResponseEntity.ok(new ReservaDetalhamentoDTO(reservaSalva));
     }
 
     @GetMapping
@@ -38,4 +37,3 @@ public class ReservaController {
         return ResponseEntity.noContent().build();
     }
 }
-

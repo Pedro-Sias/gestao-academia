@@ -17,8 +17,18 @@ public class TreinoController {
     @Autowired
     private TreinoService service;
 
+    @Autowired
+    private com.gestao_academia.repository.AlunoRepository alunoRepository;
+
     @PostMapping
     public ResponseEntity<TreinoDetalhamentoDTO> criar(@RequestBody Treino treino) {
+
+        if (treino.getAluno() != null && treino.getAluno().getId() != null) {
+            var alunoReal = alunoRepository.findById(treino.getAluno().getId())
+                    .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+            treino.setAluno(alunoReal);
+        }
+
         var salvo = service.salvar(treino);
         return ResponseEntity.ok(new TreinoDetalhamentoDTO(salvo));
     }
