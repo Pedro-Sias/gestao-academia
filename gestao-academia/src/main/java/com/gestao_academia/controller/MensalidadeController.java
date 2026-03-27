@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/mensalidades")
@@ -41,6 +42,12 @@ public class MensalidadeController {
                 .map(MensalidadeDetalhamentoDTO::new)
                 .toList();
         return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("/{id}/pagar")
+    public ResponseEntity<MensalidadeDetalhamentoDTO> pagar(@PathVariable UUID id) {
+        var mensalidadePaga = service.confirmarPagamento(id);
+        return ResponseEntity.ok(new MensalidadeDetalhamentoDTO(mensalidadePaga));
     }
 
 }

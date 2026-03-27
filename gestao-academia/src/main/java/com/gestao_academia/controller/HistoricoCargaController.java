@@ -1,5 +1,6 @@
 package com.gestao_academia.controller;
 
+import com.gestao_academia.dto.HistoricoCargaDTO;
 import com.gestao_academia.model.HistoricoCarga;
 import com.gestao_academia.service.HistoricoCargaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,23 @@ public class HistoricoCargaController {
     }
 
     @GetMapping("/ultima-carga")
-    public ResponseEntity<HistoricoCarga> buscarUltima(
+    public ResponseEntity<HistoricoCargaDTO> buscarUltima(
             @RequestParam UUID alunoId,
             @RequestParam UUID exercicioId) {
-        return ResponseEntity.ok(service.buscarUltimaCarga(alunoId, exercicioId));
+
+        var historico = service.buscarUltimaCarga(alunoId, exercicioId);
+
+        if (historico == null) {
+            return ResponseEntity.ok(new HistoricoCargaDTO(java.math.BigDecimal.ZERO, java.time.LocalDate.now(), "Sem registro"));
+        }
+
+
+        var dto = new HistoricoCargaDTO(
+                historico.getCargaAtual(),
+                historico.getDataRegistro().toLocalDate(),
+                historico.getExercicio() != null ? historico.getExercicio().getNome() : "Exercicio não identificado"
+        );
+
+        return ResponseEntity.ok(dto);
     }
 }
