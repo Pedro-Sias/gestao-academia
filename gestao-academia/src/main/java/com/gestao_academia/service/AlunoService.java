@@ -5,6 +5,7 @@ import com.gestao_academia.model.StatusPagamento;
 import com.gestao_academia.repository.AlunoRepository;
 import com.gestao_academia.repository.MensalidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,7 +21,15 @@ public class AlunoService {
     @Autowired
     private MensalidadeRepository mensalidadeRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Aluno salvar(Aluno aluno) {
+
+        String senhaCriptografada = passwordEncoder.encode(aluno.getSenha());
+        aluno.setSenha(senhaCriptografada);
+
+
         Aluno alunoSalvo = repository.save(aluno);
 
         Mensalidade mensalidadeInicial = new Mensalidade();

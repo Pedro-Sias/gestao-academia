@@ -24,10 +24,11 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("API Gestao Academia")
                     .withSubject(usuario.getEmail())
+                    .withClaim("role", usuario.getTipo().name())
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar token jwt", exception);
+            throw new RuntimeException("Erro ao gerar token JWT", exception);
         }
     }
 

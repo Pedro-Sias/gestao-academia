@@ -23,4 +23,5 @@ public class Aluno extends Usuario {
                 this.matricula = "MAT" + java.time.Year.now().getValue() + (int)(Math.random() * 10000);
     }
 
+
 }

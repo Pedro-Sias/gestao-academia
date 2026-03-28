@@ -6,7 +6,7 @@ import java.util.UUID;
 @Entity
 @Table(name ="professor")
 @Data
-public class Professor {
+public class Professor extends Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
