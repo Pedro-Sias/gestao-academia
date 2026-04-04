@@ -30,13 +30,18 @@ public class SecurityFilter extends OncePerRequestFilter {
         var tokenJWT = recuperarToken(request);
 
         if (tokenJWT != null) {
-            var subject = tokenService.getSubject(tokenJWT);
-            var usuario = repository.findByEmail(subject).orElse(null);
+            try {
+                var subject = tokenService.getSubject(tokenJWT);
+                var usuario = repository.findByEmail(subject).orElse(null);
 
-            if (usuario != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        usuario, null, usuario.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (usuario != null) {
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            usuario, null, usuario.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                // Se o token for inválido ou expirado, apenas ignoramos e seguimos o fluxo.
+                System.out.println("Token inválido ou expirado interceptado. Seguindo fluxo normal...");
             }
         }
 
