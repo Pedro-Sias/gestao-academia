@@ -13,6 +13,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     List<Usuario> findAllByTipo(Perfil tipo);
 
-
     boolean existsByEmail(String email);
+
+    long countByTipo(Perfil tipo);
 }

@@ -26,13 +26,17 @@ public class RecepcionistaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid Recepcionista recepcionista) {
+    public ResponseEntity cadastrar(@RequestBody Recepcionista recepcionista) { // Removi o @Valid aqui
         if (repository.existsByEmail(recepcionista.getEmail())) {
             return ResponseEntity.badRequest().body("E-mail já cadastrado!");
         }
+
+        recepcionista.setId(null);
+
         recepcionista.setSenha(encoder.encode(recepcionista.getSenha()));
         recepcionista.setTipo(Perfil.RECEPCIONISTA);
         recepcionista.setStatus("ATIVO");
+
         repository.save(recepcionista);
         return ResponseEntity.ok(recepcionista);
     }

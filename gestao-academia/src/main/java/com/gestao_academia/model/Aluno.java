@@ -9,6 +9,7 @@ import java.util.List;
 @Table(name= "alunos")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("ALUNO")
 public class Aluno extends Usuario {
 
     private String matricula;

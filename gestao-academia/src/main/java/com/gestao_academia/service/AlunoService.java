@@ -1,7 +1,9 @@
 package com.gestao_academia.service;
+
 import com.gestao_academia.model.Aluno;
 import com.gestao_academia.model.Mensalidade;
 import com.gestao_academia.model.StatusPagamento;
+import com.gestao_academia.model.Perfil;
 import com.gestao_academia.repository.AlunoRepository;
 import com.gestao_academia.repository.MensalidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class AlunoService {
 
         String senhaCriptografada = passwordEncoder.encode(aluno.getSenha());
         aluno.setSenha(senhaCriptografada);
+
+
+        aluno.setTipo(Perfil.ALUNO);
 
 
         Aluno alunoSalvo = repository.save(aluno);
